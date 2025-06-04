@@ -7,10 +7,32 @@ const loadReviews = () => {
     }
 }
 
-document.addEventListener("DOMContentLoaded", loadReviews);
+document.addEventListener("DOMContentLoaded", () => {
+    loadReviews();
+    const reviewForm = document.querySelector('#review-form');
+    reviewForm.addEventListener('submit', handleReviewSubmit);
+});
 
-const handleReviewSubmit = () => {
+const handleReviewSubmit = (event) => {
     console.log("handleReviewSubmit called!");
+    event.preventDefault();
+
+    const reviewInput = document.querySelector("#review-text");
+    const reviewText = reviewInput.value;
+    const rating = document.querySelector("#rating").value;
+    const title = document.querySelector("#book-title").value;
+    let review = {
+        rating,
+        reviewText,
+        title,
+        likes: 0,
+        reposts: 0
+    };
+    const newReviewElement = createReviewElement(review);
+
+    const reviewsList = document.querySelector('#reviews-list');
+    reviewsList.insertBefore(newReviewElement, reviewsList.firstChild);
+    event.target.reset();
 }
 
 const createReviewElement = (review) => {
